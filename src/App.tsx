@@ -39,6 +39,9 @@ function App() {
     setDob('');
 
   }
+  const handleClearAllClick = () => {
+    setFormlist([]);
+  }
   return <>
     <form>
       <Row>
@@ -50,6 +53,7 @@ function App() {
           <Input value={dob} onChange={handleDobInput} type="text" placeholder="Date Of Birth">
           </Input>
           <Button onClick={handleButtonClick}>Submit</Button>
+          <Button onClick={handleClearAllClick}>Clear all</Button>
         </Col>
         <Col span={12}>
           <Table columns={COLUMNS} dataSource={formList}></Table>
