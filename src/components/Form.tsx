@@ -29,16 +29,23 @@ function Form() {
             key: submitObject.key
         }
         console.log('Updated obj:', updatedObj);
-        console.log('Updated obj key:', updatedObj.key?.getTime());
-        /*  let foundId: number = 0;
-         for (let i = 0; i < formList.length; i++) {
-             if (event.target.id === formList[i].key.getTime()) {
-                 console.log(i);
-                 foundId = i;
-             }
-         }
-         formList[foundId] = updatedObj;
-         setFormlist(formList); */
+        console.log('Updated obj key:', updatedObj.key!.getTime());
+        let foundId: number = 0;
+        for (let i = 0; i < formList.length; i++) {
+            if (updatedObj.key!.getTime() === formList[i].key.getTime()) {
+                console.log(updatedObj.key?.getTime(), 'Updated obj key');
+                console.log(formList[i].key.getTime(), 'Formlist item obj key');
+                console.log('foundId='+i);
+                foundId = i;
+            }
+        }
+        formList[foundId] = updatedObj;
+        let updatedFormList=[...formList];
+        setFormlist(updatedFormList);
+        setIsModalOpen(false);
+        INIT_VALUES();
+        /* formList[foundId] = updatedObj;
+        setFormlist(formList); */
     }
 
     const handleCancel = (event: any) => {
@@ -80,7 +87,7 @@ function Form() {
         }
         setSubmitObject(submitingObject);
         console.log('submit object', submitingObject);
-        console.log('date type:', submitingObject.key.valueOf());
+        console.log('object id:', submitingObject.key.valueOf());
         setFormlist([...formList, submitingObject]);
         INIT_VALUES();
     }
