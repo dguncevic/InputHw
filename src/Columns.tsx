@@ -1,6 +1,4 @@
-const handleRowClicked = (event: any) => {
-  console.log(event.target.value);
-}
+import { Space } from "antd";
 
 export const COLUMNS = [
 
@@ -19,4 +17,14 @@ export const COLUMNS = [
     dataIndex: 'dob',
     key: 'dob',
   },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (record: any) => (
+      <Space size="middle" >
+        <a>Update {record.firstname}</a>
+        <a>Delete</a>
+      </Space>
+    )
+  }
 ];
