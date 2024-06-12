@@ -30,24 +30,18 @@ function Form() {
         }
         console.log('Updated obj:', updatedObj);
         console.log('Updated obj key:', updatedObj.key!.getTime());
-        let foundId: number = 0;
-        for (let i = 0; i < formList.length; i++) {
-            if (updatedObj.key!.getTime() === formList[i].key.getTime()) {
-                console.log(updatedObj.key?.getTime(), 'Updated obj key');
-                console.log(formList[i].key.getTime(), 'Formlist item obj key');
-                console.log('foundId='+i);
-                foundId = i;
-            }
-        }
-        formList[foundId] = updatedObj;
-        let updatedFormList=[...formList];
-        setFormlist(updatedFormList);
-        setIsModalOpen(false);
-        INIT_VALUES();
-        /* formList[foundId] = updatedObj;
-        setFormlist(formList); */
-    }
+        let foundIndex = formList.findIndex((item: { key: { getTime: () => number; }; }) => updatedObj.key!.getTime() === item.key.getTime());
 
+        if (foundIndex !== -1) {
+            formList[foundIndex] = updatedObj;
+            console.log('Pronadjen je:', formList[foundIndex], 's indexom', foundIndex);
+            let updatedFormList = [...formList];
+            setFormlist(updatedFormList);
+            INIT_VALUES();
+            setIsModalOpen(false);
+        }
+    }
+    
     const handleCancel = (event: any) => {
         INIT_VALUES();
         setIsModalOpen(false);
@@ -72,9 +66,7 @@ function Form() {
             setDob('')
     }
 
-
     const handleSubmitClick = () => {
-
         if (!firstname) {
             console.log("FIRSTNAME JE PRAZAN: ", !firstname);
             return;
@@ -113,7 +105,7 @@ function Form() {
             setFirstname(record.firstname);
             setLastname(record.lastname);
             setDob(record.dob);
-
+            setSubmitObject(record);
 
         } else if (clickedAction === 'Delete') {
             console.log('Stiso si delete');
@@ -136,7 +128,6 @@ function Form() {
         console.log(formList);
     }
     return (
-
         <form>
             <Row>
                 <Col>
@@ -163,8 +154,7 @@ function Form() {
                 </Modal>
             </Row>
         </form >
-
     );
-
 }
+
 export default Form;
