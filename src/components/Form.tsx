@@ -9,21 +9,36 @@ function Form() {
     const [formList, setFormlist] = useState<any>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleOk = (event: any) => {
+    interface Submiter {
+        firstname: string,
+        lastname: string,
+        dob: string,
+        key: Date | undefined
+    }
+    const [submitObject, setSubmitObject] = useState<Submiter>({
+        firstname: '',
+        lastname: '',
+        dob: '',
+        key: undefined
+    })
+    const handleOk = () => {
         let updatedObj = {
             firstname,
             lastname,
-            dob
+            dob,
+            key: submitObject.key
         }
-        let foundId: number = 0;
-        for (let i = 0; i < formList.length; i++) {
-            if (id === formList[i].key.getTime()) {
-                console.log(i);
-                foundId = i;
-            }
-        }
-        formList[foundId] = updatedObj;
-        setFormlist(formList);
+        console.log('Updated obj:', updatedObj);
+        console.log('Updated obj key:', updatedObj.key?.getTime());
+        /*  let foundId: number = 0;
+         for (let i = 0; i < formList.length; i++) {
+             if (event.target.id === formList[i].key.getTime()) {
+                 console.log(i);
+                 foundId = i;
+             }
+         }
+         formList[foundId] = updatedObj;
+         setFormlist(formList); */
     }
 
     const handleCancel = (event: any) => {
@@ -43,6 +58,7 @@ function Form() {
     const handleDobInput = (event: any) => {
         setDob(event.target.value);
     }
+
     const INIT_VALUES = () => {
         setFirstname(''),
             setLastname(''),
@@ -50,20 +66,22 @@ function Form() {
     }
 
 
-    const handleButtonClick = () => {
+    const handleSubmitClick = () => {
 
         if (!firstname) {
             console.log("FIRSTNAME JE PRAZAN: ", !firstname);
             return;
         }
-        let submitObject = {
+        let submitingObject = {
             firstname,
             lastname,
             dob,
             key: new Date()
         }
-        console.log('submit object', submitObject);
-        setFormlist([...formList, submitObject]);
+        setSubmitObject(submitingObject);
+        console.log('submit object', submitingObject);
+        console.log('date type:', submitingObject.key.valueOf());
+        setFormlist([...formList, submitingObject]);
         INIT_VALUES();
     }
 
@@ -90,7 +108,6 @@ function Form() {
             setDob(record.dob);
 
 
-
         } else if (clickedAction === 'Delete') {
             console.log('Stiso si delete');
             for (let i = 0; i < formList.length; i++) {
@@ -107,6 +124,10 @@ function Form() {
             }
         }
     }
+
+    const handleArrays = () => {
+        console.log(formList);
+    }
     return (
 
         <form>
@@ -118,8 +139,9 @@ function Form() {
                     </Input>
                     <Input value={dob} onChange={handleDobInput} type="text" placeholder="Date Of Birth">
                     </Input>
-                    <Button onClick={handleButtonClick}>Submit</Button>
+                    <Button onClick={handleSubmitClick}>Submit</Button>
                     <Button onClick={handleClearAllClick}>Clear all</Button>
+                    <Button onClick={handleArrays}>Console Arrays</Button>
                 </Col>
                 <Col span={12}>
                     <Table columns={COLUMNS} dataSource={formList} onRow={(record) => ({ onClick: (event) => handleRowClicked(record, event) })}></Table>
